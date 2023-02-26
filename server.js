@@ -93,7 +93,82 @@ router.route('/testcollection')
         res.json(o);
     }
     );
-    
+
+//HERE is /movies
+router.route('/movies')
+    .get( (req, res) => {
+            res.json({
+                        status:200,
+                        success: true,
+                        msg: 'GET movies.',
+                        headers: req.headers,
+                        query: req.query,
+                        env: process.env.UNIQUE_KEY
+            })
+    })
+    .post( (req, res) => {
+        if (!req.body.moviename) {
+            res.json({success: false, msg: 'Please include a movie name to add.'})
+        } else {
+            var newMovie = {
+                newMovie: req.body.moviename
+            };
+            db.save(newMovie); //no duplicate checking
+            res.json({
+                    status:200,
+                    success: true,
+                    msg: 'movie saved.',
+                    headers: req.headers,
+                    query: req.query,
+                    env: process.env.UNIQUE_KEY
+            })
+        }
+    })
+    .delete(authController.isAuthenticated, (req, res) => {
+            console.log(req.body);
+            res.json({
+                        status:200,
+                        success: true,
+                        msg: 'movie deleted.',
+                        headers: req.headers,
+                        query: req.query,
+                        env: process.env.UNIQUE_KEY
+            })
+            if (req.get('Content-Type')) {
+                res = res.type(req.get('Content-Type'));
+            }
+            var o = getJSONObjectForMovieRequirement(req);
+            res.json(o);
+        }
+    )
+    .put(authJwtController.isAuthenticated, (req, res) => {
+            console.log(req.body);
+            res.json({
+                        status:200,
+                        success: true,
+                        msg: 'movie updated',
+                        headers: req.headers,
+                        query: req.query,
+                        env: process.env.UNIQUE_KEY
+            })
+            if (req.get('Content-Type')) {
+                res = res.type(req.get('Content-Type'));
+            }
+            var o = getJSONObjectForMovieRequirement(req);
+            res.json(o);
+        }
+    );
+//ending /movies
+
+// other methods condition
+router.all('*', (req, res) => {
+    res.json({
+        error: "It does not support the HTTP method."
+    });
+});
+//ending other methods
+
+
 app.use('/', router);
 app.listen(process.env.PORT || 8080);
 module.exports = app; // for testing only
