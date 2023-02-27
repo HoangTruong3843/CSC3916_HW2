@@ -107,9 +107,7 @@ router.route('/movies')
             })
     })
     .post( (req, res) => {
-        if (!req.body.moviename) {
-            res.json({success: false, msg: 'Please include a movie name to add.'})
-        } else {
+
             var newMovie = {
                 newMovie: req.body.moviename
             };
@@ -122,7 +120,7 @@ router.route('/movies')
                     query: req.query,
                     env: process.env.UNIQUE_KEY
             })
-        }
+
     })
     .delete(authController.isAuthenticated, (req, res) => {
             console.log(req.body);
