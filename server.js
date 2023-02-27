@@ -170,13 +170,8 @@ router.all('*', (req, res) => {
 
 
 app.use('/', router);
-//app.listen(process.env.PORT || 8080);
-//module.exports = app; // for testing only
+app.listen(process.env.PORT || 8080);
+module.exports = app; // for testing only
 
-const port = process.env.PORT || 8080; // Use the Heroku-provided port, or default to 8080
-app.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
-});
-module.exports = app;
 
 
