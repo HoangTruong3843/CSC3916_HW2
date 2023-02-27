@@ -124,14 +124,14 @@ router.route('/movies')
     })
     .delete(authController.isAuthenticated, (req, res) => {
             console.log(req.body);
-            res.json({
-                        status:200,
-                        success: true,
-                        msg: 'movie deleted.',
-                        headers: req.headers,
-                        query: req.query,
-                        env: process.env.UNIQUE_KEY
-            })
+            res = res.status(200).send({
+                success: true,
+                msg: "movie deleted",
+                headers: req.headers,
+                query: req.query,
+                env: process.env.UNIQUE_KEY
+            }
+            );
             if (req.get('Content-Type')) {
                 res = res.type(req.get('Content-Type'));
             }
